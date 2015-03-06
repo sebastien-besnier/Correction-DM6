@@ -532,7 +532,8 @@ def roots(P, eps):
     """
     return 0
 
-#DM Pratique 
+#DM Pratique. Tu pouvais modifier directement le fichier au lieu de tout mettre
+# à la fin.
 
 #Questions préliminaires 
 
@@ -573,15 +574,15 @@ def binomiale(k,n):
 
 #Fonction evalpoly
 
-def evale_poly(P,x):
+def eval_poly(P,x): # respecter les noms du sujet
     A=0
     for i in range(P.deg+1):
         A=A+P[i]*x**i
-    return int(A)
+    return A # le résultat peut être un float
 
 #Fonction dérivée
 
-def derivatives(P):
+def derivative(P):# respecter les noms du sujet
     A=Polynome([0])
     for i in range(P.deg):
         A[i]=P[i+1]*(i+1)
@@ -589,15 +590,16 @@ def derivatives(P):
 
 #Suite de Sturm
 
-def sturm_sequences(P):
+def sturm_sequence(P):# respecter les noms du sujet
     l=[]
     x=0
     l.append(P)
-    l.append(derivatives(P))
+    l.append(derivative(P))
     while l[x+1].deg>0:
         l.append(-(l[x])%(l[x+1]))
         x=x+1
     return l
 
-
+# conclusion : Bien, à part le non respect des noms imposés par le sujet
+# et de la mise en forme (docstring manquante).
 

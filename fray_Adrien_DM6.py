@@ -372,7 +372,7 @@ def quarante_deux_fois(x):
 
 # 1) P = Polynome([1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #                         ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1])
-
+# Un peu hasardeux : et si tu as oublié un 0 ?
 P = Polynome([1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1])
 P
 
@@ -385,7 +385,7 @@ P
 #    R = 42*X**12+3*X-2
 # le reste de la division est Q%R = 
 #                       -5/2744*X**9+5/1372*X**8-5/2058*X**7+5/9261*X**6+3*X+1 
-
+# Mm remarque que plus haut.
 Q = Polynome([1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5])
 R = Polynome([-2,3,0,0,0,0,0,0,0,0,0,0,42])
 Q%R
@@ -395,7 +395,7 @@ Q%R
 # Just for fun, sans lien avec la suite
 def binomial(k, n):
     P = Polynome([1,1])**n
-    return P[k]
+    return P[k]# 1 ligne ?
 
 binomial(0,7)
 binomial(10,5)
@@ -424,9 +424,13 @@ def sturm_sequence(P):
     P0 = P
     P1 = derivative(P)
     L = [P0,P1]
-    while not -(L[len(L)-2]%L[len(L)-1]) == 0 :
+    # (L[len(L)-2]%L[len(L)-1]) est évalué 2 fois.
+    while not (L[len(L)-2]%L[len(L)-1]) == 0 :# Le "-" induit un calcul inutile
         v = -(L[len(L)-2]%L[len(L)-1])
         L += [v]
     return L
     
 sturm_sequence(Polynome([-1, 9, -6, 1]))
+
+# Conclusion : correct, dommage que le format ne soit pas respecté
+# (docstring manquante).
