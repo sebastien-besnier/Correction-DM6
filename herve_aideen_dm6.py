@@ -326,12 +326,15 @@ class Polynome:
 3*X**3+2*X**2+X
 # 1. Construire le polynôme X^52 + 3X^2 +1 (plusieurs lignes peuvent 
 #    être nécessaires).
+# comment savoir si tu as compté le bon nombre de 0 ?
 ([1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1])
 # 2. Donner 2 moyens de connaître le coefficient dominant d'un polynôme P
-  utilisation fonction lead
+  utilisation fonction lead (ce n est pas une fonction). un 2eme moyen ?
 # 3. Comment accéder au terme constant d'un polynôme P?
+# => ?
 # 4. Calculer le reste de la division de 5X^42 + 3X+1 par 42 X^12 +3X-2.
+# => ?
 # 5. Si P est un polynôme, comment tester que P est le polynôme nul?
   P==0
 
@@ -378,7 +381,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=Polynome([1,1])
-    return getitem(pow(P,n),k)
+    return getitem(pow(P,n),k) # pourquoi pas (P**n)[k] ?
     
     
 def eval_poly(P, x):
@@ -449,10 +452,11 @@ def sturm_sequence(P):
     L=[P_1,P_2]
     P_3=-(P_1%P_2)
     while not P_3==0:
+        L.append(P_3) # là où il était, sturm_sequence(Polynome([-1, 9, -6, 1])
+        # renvoyait [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 9/4, 0]
         P_1=P_2
         P_2=P_3
         P_3=-(P_1%P_2)
-        L.append(P_3)
     return L
     
         
@@ -476,11 +480,10 @@ def nb_change_sign_at(polys, x):
     for i in range(len(polys)):
         polys[i]=eval_poly(polys[i],x)
     for j in range(len(polys)):
-        if polys[j-1]>0:
-            if polys[j]<0:
+        # et s'il y a un 0 ?
+        if polys[j-1]>0 and polys[j]<0:
                 C=C+1
-        if polys[j-1]<0:
-            if polys[j]>0:
+        if polys[j-1]<0 and polys[j]>0:
                 C=C+1
     return C
 
@@ -508,7 +511,7 @@ def roots_range(P):
     dans l'exercice 21, le polynôme est supposé unitaire).
     """
     
-    return M
+    return M # M non défini => erreur
     
 def nb_roots(polys):
     """ Renvoie le nombre de racines réelles du premier polynôme de polys,
@@ -518,8 +521,9 @@ def nb_roots(polys):
         polys: une liste de polynômes, plus exactement, polys est la suite de
             Sturm de polys[0].
     """
-    B1=nb_change_sign_at(polys[0],-roots_range(polys[0]))
-    B2=nb_change_sign_at(polys[0],roots_range(polys[0]))
+    #roots_range calculé 2 fois
+    B1=nb_change_sign_at(polys[0],-roots_range(polys[0])+1) # les racines peuvent être en M ou -M
+    B2=nb_change_sign_at(polys[0],roots_range(polys[0])+1)
     return B1-B2
 
 def find_root(P, a, b, eps):
@@ -529,10 +533,10 @@ def find_root(P, a, b, eps):
     Algorithme : utiliser une dichotomie.
     """
     while (b-a)/2>=eps:
-        c=(a+b)/2
+        c=(a+b)/2 # ne fait pas ce que tu crois
         if P(c)==0:
             return c
-        if P(a)>0:
+        if P(a)>0:# provoque une erreur...
             if P(c)>0:
                 a,b=c,b
             else:
@@ -583,5 +587,10 @@ def roots(P, eps):
     """
     L=[]
     for i in range(len(isolate_roots(P))):
-        L.append(find_root(P,i-1,i,eps))
+        L.append(find_root(P,i-1,i,eps))# euh... non.
     return L
+    
+# Un travail qui semble de bonne volonté, mais il aurait été préférable
+# de faire moins de fonctions, mais qu'elles renvoient toutes une résultat
+# correct. Ici sturm_sequence était faux, du coup tout le reste est
+# inutile.

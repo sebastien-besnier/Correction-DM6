@@ -335,11 +335,11 @@ class Polynome:
   '''
   methode 1:
   utiliser la commande 
-  >>>P.lead
+  >>> P.lead
   
   methode 2:
   utiliser la commande
-  >>>P[P.deg]
+  >>> P[P.deg]
   
   '''
   
@@ -348,13 +348,13 @@ class Polynome:
   
 # 4. Calculer le reste de la division de 5X^42 + 3X+1 par 42 X^12 +3X-2.
  '''
- >>>(Polynome([0]*42+[5])+Polynome([1,3]))%(Polynome([0]*12+[42])+Polynome([-2,3]))
+ >>> (Polynome([0]*42+[5])+Polynome([1,3]))%(Polynome([0]*12+[42])+Polynome([-2,3]))
  -5/2744*X**9 + 5/1372*X**8 - 5/2058*X**7 + 5/9261*X**6 + 3*X + 1
 
  '''
   
 # 5. Si P est un polynôme, comment tester que P est le polynôme nul?
-  #on verifie son degré avec la commande P.deg
+  #on verifie son degré avec la commande P.deg => c'est à dire ?
 
 # Consigne: écrire le corps des fonctions données. Laisser la docstring
 # (la chaine de caractères sous la fonction la documentant). TESTER ABONDAMMENT
@@ -429,7 +429,8 @@ def eval_poly(P, x):
         >>> eval_poly(5*X**2 + 1, 3)
         46
     """
-    if type(P) is int or type(P) is float: 
+    if type(P) is int or type(P) is float: #dans ce cas pour ne pas renvoyer P directement?
+                                           # l'énoncé demande de ne pas se préoccuper de ça.
         P=Polynome([P])
     A=0
     for i in range (P.deg,-1,-1):
@@ -454,16 +455,6 @@ def derivative(P):
     
 
 def sturm_sequence(P):
-    
-    i=1
-    L=[P,derivative(P)]
-    while not L[i-1]%L[i] ==0:
-        
-        L.append(-(L[i-1]%L[i]))
-        
-        i+=1
-           
-    return L
     """ Renvoie la suite de Sturm de P sous forme de liste [P_0, P_1, ..., P_m].
     
     La suite de Sturm est définie par (l'expression "A%B" désigne le reste de la
@@ -478,6 +469,14 @@ def sturm_sequence(P):
         >>> sturm_sequence(P)
         [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]
     """
+    
+    i=1
+    L=[P,derivative(P)]
+    while not L[i-1]%L[i] ==0:
+        L.append(-(L[i-1]%L[i]))
+        i+=1
+           
+    return L
         
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
@@ -497,8 +496,9 @@ def nb_change_sign_at(polys, x):
         >>> nb_change_sign_at([X**2 + 1, X - 2, -X], 2)
         1 # on a "3, 0, -2" soit la chaîne de signes "+0-", donc 1 changement
     """
+    # Tu modifies ton argument ici !!!
     for i in range (len(polys)):
-        polys[i]= float(eval_poly(polys[i],x))
+        polys[i]= eval_poly(polys[i],x)
     sgn=0
     j=0
     while j!=len(polys)-1:
@@ -506,13 +506,15 @@ def nb_change_sign_at(polys, x):
             sgn+=1
         elif (polys[j]*polys[j+1]) == 0 and polys[j] != 0:
             k=j+1
+            # et si k > len(polys) ?
             while (polys[j]*polys[k])==0:
                 k+=1
             if polys[j]*polys[k]<0:
                 sgn+=1
             j=k-1
         j+=1
-                
+       #Tout cela est un peu compliqué... Et peu efficace (même
+       # remarque qu'à Ariane).         
     
     return sgn
     
@@ -529,11 +531,18 @@ def nb_roots_between(polys,a,b):
         a: un nombre;
         b: un nombre strictement plus grand que a.
     """
-    
-    
+    # Lors du premier appel à nb_change_sign_at, tu modifies
+    # polys.... Que tu repasses ensuite à nb_change_sign_at
+    # qui ne fait pas du tout ce que tu veux. Le fait que Python
+    # t'affiche une erreur de type aurait du t'indiquer que
+    # polys n'était plus une liste de polynome. Tu as tenté
+    # de mettre une rustine sur eval_poly pour faire disparaître
+    # le message d'erreur, mais cela n'a
+    # pas corrigé le problème.
     return (nb_change_sign_at(polys, a) - nb_change_sign_at(polys, b))
 #je me suis arreté ici car je ne trouve pas la raison du non-fonctionnement de cette fonction
 
+# Conclusion : 
 def roots_range(P):
     """ Renvoie un nombre M > 0 tel que toutes les racines de P soient dans 
     l'intervalle [-M, M].

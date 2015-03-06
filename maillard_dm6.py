@@ -14,41 +14,43 @@ def binomial(k, n):
         return 0
     else:
         return binomial(k,n-1) + binomial(k-1, n-1)
-
+# aucune des fonctions proposées ne répond à la contrainte "1 ligne".
 
 def eval_poly(P, x):
     res = 0
-    for i in range (0, P.deg+1):
+    for i in range(0, P.deg+1):
         res = res + (P[i] * x**i)
     return res
  
 def derivative(P):
     coef = []
-    for i in range (1, P.deg+1):
+    for i in range(1, P.deg+1):
         coef.append(P[i]*i)
     return Polynome(coef)
      
  
 
 def sturm_sequence(P):
-    X = Polynome([0,1])
+    X = Polynome([0,1]) # inutile
     sturm = [P]
     sturm.append(derivative(P))
     i=1
-    while ((sturm[i-1] % sturm[i]) != X[0]):
+    while ((sturm[i-1] % sturm[i]) != X[0]): # équivalent à "!= 0"
         sturm.append(-(sturm[i-1] % sturm[i]))
         i = i + 1
 
     return sturm
+    
          
 def nb_change_sign_at(polys, x):
     eval = []
-    for i in polys:
-        r = eval_poly(i, x)
+    for poly in polys: # i est plutot utilisé pour des indices
+        r = eval_poly(poly, x)
         if r != 0:
             eval.append(r)
 
     nb = 0
+    # bonne idée, mais nécessite 2 parcours.
     for i in range(1,len(eval)) :
         if (eval[i-1] * eval[i]) < 0:
             nb = nb + 1
@@ -65,7 +67,7 @@ def roots_range(P):
     for i in range (0, P.deg+1):
         somme = somme + abs(P[i])
 
-    return somme
+    return somme # P n'est pas supposé unitaire ; de plus, ce n'est pas ce que dit l'exo 21.
      
 def nb_roots(polys):
     return nb_roots_between(polys, -roots_range(polys[0]), roots_range(polys[0]))
@@ -75,7 +77,7 @@ def find_root(P, a, b, eps):
     fin = b * 1.0
     milieu = 0.0
     while (fin-deb) > eps:
-        milieu = deb + ((fin-deb) / 2)
+        milieu = (fin+deb) / 2
         if eval_poly(P, milieu) * eval_poly(P, fin) <= 0:
             deb = milieu
         else:
@@ -108,3 +110,5 @@ def roots(P, eps):
     for i in range(0,len(L)-1) :
         S.append(find_root(P, L[i], L[i+1], eps))
     return S
+    
+# Bon travail. Dommage que le format ne soit pas respecté (absence de docstring)

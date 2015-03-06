@@ -14,7 +14,8 @@ Created on Thu Feb 26 21:27:27 2015
 #Q1:
 
 def Polynome(X):
-    P = Polynome([1, 3, 1])
+    P = Polynome([1, 3, 1]) # tu n'as visiblement pas testé ta fonction.
+    # elle s'appelle elle même indéfiniment, ce qui fait planter Python.
     while P.deg==52:
         P = X**52 + 3*X**2 + 1
     return P
@@ -26,7 +27,8 @@ def Polynome(X):
 #faire P.lead
 #2e moyen: faire
 def coeff(P, X, i):     # coeff=coefficient dominant
-    while P.deg==i:
+    while P.deg==i: # si le degré de P est i, Python va boucler indéfiniment
+    # sinon, coeff ne sera pas défini et lancera une erreur.
         coeff=P[i]      # le coefficient devant X**i
     return coeff
 
@@ -56,4 +58,6 @@ def Polynome_nul(P, n, X):
         P = 0
     return Polynome_nul
 
-
+# Conclusion : Décevant, quasiment aucune fonction que du donne ne s'exécute
+# correctement (soit elles bouclent indéfiniment, soit elles plantent
+# tout simplement).

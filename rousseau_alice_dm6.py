@@ -42,7 +42,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P = (Polynome ([1,1]))**n  #on utilise le binome de Newton
-    return P[k]
+    return P[k]# 1 ligne ?
     
 binomial (10,15)
 
@@ -101,7 +101,7 @@ def derivative(P):
     """
     P_derive=Polynome([0])
     n=P.deg
-    for i in range (n,0,-1):
+    for i in range (n,0,-1): # pourquoi à l'envers ?
         P_derive[i-1]=i*P[i]
     return P_derive
      
@@ -137,6 +137,8 @@ def sturm_sequence(P):
     
 P=Polynome([-1,9,-6,1])
 sturm_sequence(P)
+
+# Conclusion : Bien.
         
      
          

@@ -398,7 +398,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=(Polynome([1,1]))**n
-    return P[k]
+    return P[k] # 1 seule ligne ?
     
    
 
@@ -477,7 +477,7 @@ def sturm_sequence(P):
     P2=derivative(P)
     L=[P1,P2]
     while P2.deg!=0:
-        P3=(-(P1%P2))
+        P3=-(P1%P2)
         L.append(P3)
         P1=P2
         P2=P3
@@ -487,7 +487,7 @@ sturm_sequence(G)
 
 
 
-    
+# Conclusion : bon travail.   
         
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 

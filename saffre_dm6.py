@@ -293,6 +293,8 @@ if n=0:
         print "P n'est pas le polynome nul"
 else:
     print "P n'est pas le polynome nul"
+# non ça ne marche pas.
+
 # Consigne: écrire le corps des fonctions données. Laisser la docstring
 # (la chaine de caractères sous la fonction la documentant). TESTER ABONDAMMENT
 # CHAQUE FONCTION APRÈS L'AVOIR ÉCRITE ! 
@@ -312,18 +314,11 @@ else:
         (indication: (X+1)^n )
     """
     P=(X+1)**n
-    return P[k]
+    return P[k] #1ligne ?
      
  
-def eval_poly(P, X):
-    res=0
-    for i in range (P):
-        res=res+P[i]*(X**i)
-    return res
-    
-X = Polynome([0,1])    
-eval_poly(5*X**2 + 1, 0)
-        """ Renvoie P(x).
+def eval_poly(P, x):# ne pas changer la signature de la fonction
+    """ Renvoie P(x).
       Entrées:
         P: polynôme
         x: nombre
@@ -348,11 +343,18 @@ eval_poly(5*X**2 + 1, 0)
         >>> eval_poly(5*X**2 + 1, 3)
         46
     """
+    res=0
+    for i in range (P):
+        res=res+P[i]*(x**i)
+    return res
+    
+X = Polynome([0,1])    
+eval_poly(5*X**2 + 1, 0)
 
 def derivative(P):
     res=[]
     for i in range (P):
-        if not deg(p)==0:
+        if not deg(p)==0: # ? p n'est pas défini... Cette fonction plante.
             res.append([P[i]*deg(i),deg(i)-1])
     return res
     
@@ -385,7 +387,10 @@ def sturm_sequence(P):
         [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]
     """
     return []
+     # ? C'était demandé.
      
+     
+# Conclusion : Décevant. attention aux docstrings qui sont mal placées.
          
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 

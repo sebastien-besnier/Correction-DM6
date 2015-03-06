@@ -436,7 +436,7 @@ def eval_poly(P, x):
     R=0
     for i in range(P.deg+1):
         R+=P[i]*x**i
-    return int(R)
+    return R # le résultat n'est pas forcément entier
  
 def derivative(P):
     """ Renvoie le polynôme dérivé de P.
@@ -498,6 +498,7 @@ def nb_change_sign_at(polys, x):
     """
     L=[]
     nb=0
+    # Bonne idée, mais obligé de faire 2 parcours : un de polys puis un de L
     for i in range(len(polys)):
         if eval_poly(polys[i],x)>0:
             L.append(1)
@@ -508,7 +509,7 @@ def nb_change_sign_at(polys, x):
             nb+=1
     return nb
  
- 
+# Conclusion : bon travail. Juste une maladresse sur "eval_poly"
 def nb_roots_between(polys, a, b):
     """ Renvoie le nombre de racines du premier polynôme de polys sur le
     segment ]a,b[, quand polys est une suite de Sturm.

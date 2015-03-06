@@ -349,7 +349,7 @@ reste=A%B
 "P est le polynomer nul ssi le resultat est True:"
 def polynome_nul(P):
     res=True
-    for i in range(len(P)):
+    for i in range(len(P)): # un polynome ne supporte pas "len" cf ligne 42 (c'est un hasard)... Plantage !
         if P[i]!=0:
             return False
     return res
@@ -434,7 +434,7 @@ def eval_poly(P, x):
     """
     compt=0
     for i in range (P.deg +1):
-        compt+=int(P[i])*(x**i)  
+        compt+=(P[i])*(x**i)  # le résultat peut être un float
     return compt
 
 
@@ -451,7 +451,7 @@ def derivative(P):
     """
     liste=[]
     for i in range (1,P.deg +1):
-        liste.append(int(P[i])*i)
+        liste.append(P[i]*i) # les coefficients peuvent être non entier
     return Polynome(liste)
    
 
@@ -474,7 +474,8 @@ def sturm_sequence(P):
     poly1=P
     poly2=derivative(P) 
     liste=[poly1,poly2]
-    while not(poly1 % poly2)==0:
+    # multiévalutation de poly1%poly2
+    while not (poly1 % poly2)==0:
         poly3=(-1)*(poly1 % poly2)
         liste.append(poly3)
         poly1=poly2
@@ -505,7 +506,9 @@ def nb_change_sign_at(polys, x):
     for i in range (len(polys)-1):
         if eval_poly(polys[i], x)*eval_poly(polys[i+1], x)<0:
             compt+=1
-        if eval_poly(polys[i], x)==0 and i!=len(polys)-1:
+        if eval_poly(polys[i], x)==0 and i!=len(polys)-1: #et si il y a plusieurs 0
+                                                          # à la suite ? polys n'est pas
+                                                          # forcément une suite de sturm
             if eval_poly(polys[i-1], x)*eval_poly(polys[i+1], x)<0:
                 compt+=1
     return compt
@@ -521,8 +524,8 @@ def nb_roots_between(polys, a, b):
         a: un nombre;
         b: un nombre strictement plus grand que a.
     """
-    res=(nb_change_sign_at(polys, a)-nb_change_sign_at(polys, b))
-    return res 
+    return nb_change_sign_at(polys, a)-nb_change_sign_at(polys, b)
+
 
 
 
@@ -535,11 +538,12 @@ def roots_range(P):
     dans l'exercice 21, le polynôme est supposé unitaire).
     """
     #en référence à cette exo les racines sont majorées pas K
+    # qui est K ? Il y avait des valeurs absolues dans cet exo, et le polynome
+    # était supposé unitaire. Ta fonction est très erronnée
     somme=0
-    for i in range (P.deg +1):
+    for i in range(P.deg +1):
         somme+=P[i]
-    M=max(1,somme)
-    return M
+    return max(1,somme)
     
     
 def nb_roots(polys):
@@ -550,7 +554,7 @@ def nb_roots(polys):
         polys: une liste de polynômes, plus exactement, polys est la suite de
             Sturm de polys[0].
     """
-    return root_range(polys[0])
+    return root_range(polys[0]) # Hein ? Cette fonction renvoie un réel !
     
 
 def find_root(P, a, b, eps):
@@ -585,19 +589,22 @@ def isolate_roots(P):
     polys = sturm_sequence(P)
     M =roots_range(P)
     liste=[-M]
-    n=1/100
+    n=1/100 # ici n vaut 0... Pourquoi ? Et puis pourquoi 1/100 et pas 1/1000 ?
     val1=-M
     val2=-M+n
-    while not val2==M 
+    while not val2==M #syntax error ... Et cela risque de boucler indéfiniment
+                      # dans la plupart des cas.
     #avec cet intervalle on va supposer que deux racines ne peuvent etre
     #balayer avec un pas n 
-        n+=1
+        n+=1 #???!!
         if nb_roots_between(P,val1, val2)==1:
             liste.append(val2)
             val1=val2
             val2=val2+n
     return liste 
-        
+    # si je vous ai codé cette fonction, c'est qu'il y a une raison : elle est
+    # assez dure à faire à votre niveau de connaissances (et moi même me suis 
+    # en fait un peu planté sur l'approche à avoir).
     
    
     
@@ -632,10 +639,13 @@ def roots(P, eps):
     pas de facteurs carrés; pour cela, on peut tout simplement utiliser
     P.square_free().
     """
-    racine=[]
+    racines=[] # il y a plusieurs racines
     rang=0
     inter=isolate_roots(P)
     for i in range (len(inter)-1):
-        racine.append(find_root(P, inter[i], inter[i+1], eps))
-    return racine 
+        racines.append(find_root(P, inter[i], inter[i+1], eps))
+    return racine s
+    
+# Conclusion : pas mal, mais d'importants cafouillages. 
+# Rq : "t= f(x) ; return t" se remplace par "return f(x)" tout simplement.
 

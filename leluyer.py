@@ -323,17 +323,15 @@ class Polynome:
 # Questions préliminaires, pour être sûr d'avoir bien compris comment utiliser
 # les polynômes:
 # 0. Quel polynôme est construit par l'instruction Polynome([0,1,2,3])
-"0 + x + 2x^2 + 3x^3"
+"x + 2x^2 + 3x^3"
 
 # 1. Construire le polynôme X^52 + 3X^2 +1 (plusieurs lignes peuvent 
 #    être nécessaires).
 def construirepolynomebizare(d,D):
     x=1
     p=Polynome([1]) #on ajoute le terme constant = 1
-    while x<=d:     
-        p[x]=0      #tout les termes de degré inférieur au degré du polynome ont
-                    #des facteurs nuls
-        x+=1
+    # la boucle était inutile : ajouter le coefficient du bon degré
+    # rempli tout il faut.
     p[d]=D          #on ajoute le coefficient dominant
     return p
 
@@ -343,7 +341,7 @@ def construirepolynomebizare(d,D):
 
 
 # 2. Donner 2 moyens de connaître le coefficient dominant d'un polynôme P
-"utiliser la fonction lead"
+"utiliser la fonction lead" # ce ne sont pas des fonctions, mais passons
 "utiliser la fonction P.deg puis éxécuter P[P.deg]"
     
 # 3. Comment accéder au terme constant d'un polynôme P?
@@ -351,12 +349,12 @@ def construirepolynomebizare(d,D):
 
 # 4. Calculer le reste de la division de 5X^42 + 3X+1 par 42X^12 +3X-2.
 P,p=construirepolynomebizare(42,5),construirepolynomebizare(12,42)
-P[1],P[0],p[1],p[0]=3,1,3,(-2)
-P%p
+P[1],P[0],p[1],p[0]=3,1,3,-2
+P%p # très dangeureux ce choix de variable jouant sur la casse (majuscule / minuscule).
 "à executer ligne par ligne"
 
 # 5. Si P est un polynôme, comment tester que P est le polynôme nul?
-"utiliser dans un 1er temps la fonction deg puis vérifier P[0]=0"
+"utiliser dans un 1er temps la fonction deg puis vérifier P[0]=0" # non
 
 # Consigne: écrire le corps des fonctions données. Laisser la docstring
 # (la chaine de caractères sous la fonction la documentant). TESTER ABONDAMMENT
@@ -400,7 +398,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     p=Polynome([1,1])**n
-    return p[k]
+    return p[k] # 1 ligne ?
     #ce programme fonctionne mais il renvoie le resultat sous forme de fraction..."
     
 
@@ -450,13 +448,13 @@ def derivative(P):
         >>> derivative(5*X**3 - 6*X +3)
         15*X**2 - 6
     """
-    p=Polynome([])                  #p sera la dérivé de P
+    p=Polynome([])                  #p sera la dérivé de P => encore un choix de nommage contestable
     for i in range(1,P.deg+1):      #permet "d'isoler" chaque terme du polynome
         p[i-1]=P[i]*i               #un terme de degré i donne un terme de 
     return p                        #degré (i-1), son facteur est multiplié 
                                     #par ce degré
 
-P=Polynome([3,(-6),0,5])
+P=Polynome([3,-6,0,5])
 derivative(P)
 
 def sturm_sequence(P):
@@ -479,7 +477,7 @@ def sturm_sequence(P):
     P_0=P
     P_1=derivative(P)    
     Sturm=[P_0,P_1]    
-    while P_1.deg>=1:           #le programme s'arrête à l'optention de P_m=cste
+    while P_1.deg>=1:           #le programme s'arrête à l'obtention de P_m=cste
         P_1=-(P_0%P_1)          #effectue l'opération de la suite de Sturm
         Sturm.append(P_1)       #ajoute ce calcul à la suite de Sturm
         P_0=Sturm[len(Sturm)-2] #on reprend l'avant dernier terme de la suite
@@ -512,7 +510,10 @@ def nb_change_sign_at(polys, x):
     c=0                                 #nombre de changement de signe
     sign=[]                             #liste de "+","-"
     
+    # Bonne stratégie, mais inconvénient : on doit faire 2 parcours et 
+    # utiliser une liste supplémentaire.
     for i in range (len(polys)):
+        # ceci n'est pas possible, polys est une liste de polynomes.
         if type(polys[i])==int or type(polys[i])==float: #on teste si le terme
                                                         # est constant
             if polys[i]>0:
@@ -569,10 +570,10 @@ def roots_range(P):
     dans l'exercice 21, le polynôme est supposé unitaire).
     """
     S=0
-    P=P//P.lead                 #pour obtenir un polynome unitaire
+    P=P//P.lead                 #pour obtenir un polynome unitaire (ce qui ne change pas les racines)
     for i in range (P.deg+1):   # on appilque ensuite le résultat de l'ex 21
         S=S+abs(P[i])
-    if 1>S:
+    if 1>S: # cf fonction "max"
         M=1
     else :
         M=S
@@ -589,10 +590,8 @@ def nb_roots(polys):
         polys: une liste de polynômes, plus exactement, polys est la suite de
             Sturm de polys[0].
     """
-    b=roots_range(polys[0])
-    a=-b
-    nb=nb_roots_between(polys,a,b)
-    return nb
+    b=roots_range(polys[0])+ 1 # M peut être une racine
+    return nb_roots_between(polys,-b,b) # pourquoi s'embêter avec pleins de variables?
     
 polys=[X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]
 nb_roots(polys)
@@ -605,10 +604,10 @@ def find_root(P, a, b, eps):
     Algorithme : utiliser une dichotomie.
     """
     while (b-a)/2>=eps:     
-        i=(a+b)/2                  
+        i=(a+b)/2                 #ne fait pas ce que tu crois en Python 2 (mais visiblement Spyder fait en sorte que si...). 
         if eval_poly(P,i)==0:
             return i
-        elif eval_poly(P,a)>0:
+        elif eval_poly(P,a)>0:# eval_poly(P,a) et eval_poly(P,i) sont évalués plusieurs fois;
             if eval_poly(P,i)>0:
                 a=i 
             else:
@@ -661,4 +660,7 @@ def roots(P, eps):
     pas de facteurs carrés; pour cela, on peut tout simplement utiliser
     P.square_free().
     """
-    return 0
+    return 0 # rha, dommage, elle n'est pas bien dure à écrire pourtant !
+    
+# Conclusion : très bon travail, bien commenté (parfois même un peu trop, mais
+# mieux vaut trop que pas assez : au pire on survole :p).

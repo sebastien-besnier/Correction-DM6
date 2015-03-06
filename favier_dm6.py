@@ -291,7 +291,7 @@ I[12]=42
 ##I[12]=42
 ##(O+Polynome([1,3]))%(I+Polynome([-2,3]))
 # 5. Si P est un polynÃ´me, comment tester que P est le polynÃ´me nul?
-##P est nul ssi: P.deg==0 et P[0]==0
+##P est nul ssi: P.deg==0 et P[0]==0 => Non, si P.deg==0, alors P[0]!=0.
 
 # Consigne: Ã©crire le corps des fonctions donnÃ©es. Laisser la docstring
 # (la chaine de caractÃ¨res sous la fonction la documentant). TESTER ABONDAMMENT
@@ -335,7 +335,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=Polynome([1,1])**n
-    return P[k]
+    return P[k] #1ligne?
     
 
 def eval_poly(P, x):
@@ -415,6 +415,7 @@ def sturm_sequence(P):
     return L
 sturm_sequence(Polynome([-1, 9, -6, 1]))  
         
+# Conclusion : bien.
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on Ã©value les 
     polynomes dans polys en x. Un zÃ©ro n'est pas considÃ©rÃ© comme un changement

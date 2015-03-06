@@ -331,7 +331,7 @@ P
 #    être nécessaires).
 
 D=Polynome([0,0,0,0,0,0,0,0,0,0,0,0,0,1])
-D=(D*D)**2
+D=(D*D)**2 # original ;)
 
 P=D+Polynome([1,0,3])
 P
@@ -339,7 +339,7 @@ X**52 + 3*X**2 + 1
 # 2. Donner 2 moyens de connaître le coefficient dominant d'un polynôme P
 
 'En utilisant P.lead '
-'En utilisant le degré du polynome P.deg'
+'En utilisant le degré du polynome P.deg' # => oui et ?
 # 3. Comment accéder au terme constant d'un polynôme P?
 
 'Pour accéder au terme constant on fait P[0]'
@@ -397,7 +397,7 @@ def binomial(k, n):
     """
     P(X+1)**n
     bino=P[k]
-    return bino
+    return bino # 1 ligne ?
     
 
 def eval_poly(P, x):
@@ -445,7 +445,7 @@ def derivative(P):
     """
     derive = Polynome([0])
     for i in range (P.deg):
-        derive[i]=derive[i]+((i+1)*P[i+1])
+        derive[i]=((i+1)*P[i+1]) #derive[i] inutile ici (il fait toujours 0 avant qu'on l'initialise)
     return derive
 
 
@@ -468,11 +468,12 @@ def sturm_sequence(P):
     L.append(P)
     L.append(derivative(P))
     Pk=P%(derivative(P))
-    while Pk>0:
+    while Pk>0: # que signifie qu'un polynôme est positif ?
         L.append(-(L[P]%L[P+1]))
+        # Pk n'est pas mis à jour => si on est rentré dans la boucle, on n'en sortira plus. À vie. Oui, c'est affreux.
     return L
     
-        
+# Correct sauf sturm_sequence. Tu aurais pu l'indiquer.        
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
     polynomes dans polys en x. Un zéro n'est pas considéré comme un changement

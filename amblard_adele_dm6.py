@@ -1,5 +1,5 @@
 #DM 6 (Partie Python)
-    
+    #Tout est indenté => rien ne s'exécutera 
     #Question 0
     P=X+2X^2+3X^3
     #Question 1
@@ -10,7 +10,7 @@
     P = Polynome(L)   
     
     #Question 2
-    deg.P
+    deg.P #non, ne s'exécute même pas
     
     #Question 3
     P[0]
@@ -30,13 +30,13 @@
     R=-5/2744*X**9 + 5/1372*X**8 - 5/2058*X**7 + 5/9261*X**6 + 3*X + 1
     #Question 5
     P = Polynome([0,0])
-    P.deg=-1
+    P.deg==-1 #le = ne provoque pas un test mais une affectation 
     
     
     def binomial(k,n):
         P = Polynome([1,1])
         Q=P**n
-        return Q[k]
+        return Q[k] # 1 ligne ?
     def eval_poly(P, x):
         Q=0
         d=P.deg
@@ -48,7 +48,7 @@
         d=P.deg
         L=[]
         for i in range (0,d):
-            L[i]=i*P[i+1]
+            L[i]=i*P[i+1]#erreur, L[0] n'est pas défini
         Q = Polynome (L)
         return Q
         
@@ -59,11 +59,12 @@
             L.append(-L[i]%L[i+1])
             i=i+1
         return L
+        
     def nb_sg_change_at(L, x):
         c=0
         i=1
-        while i=<len(L):
-            if eval_poly(L[i],x)*eval_poly(L[i-1],x)<0:
+        while i<=len(L):#erreur de syntaxe
+            if eval_poly(L[i],x)*eval_poly(L[i-1],x)<0: #et si un des polynômes de la suite s'évalue à 0 en x ?
                 c=c+1
                 i=i+1
             else :
@@ -71,4 +72,5 @@
         return c
                
             
-    
+# Conclusion : le code comporte des erreurs de syntaxes, il provoque une erreur
+# dès l'évaluation par Python. As-tu testé ton programme ? Tout cela est décevant.

@@ -2,7 +2,7 @@
 """
 Created on Wed Feb 18 16:58:42 2015
 
-@author: Sophie
+@author: Sophie -> Enchanté
 """
 
 "Blondeau Damien"    "DM6"
@@ -306,7 +306,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
             """
     P=Polynome([1,1])**n
-    return int(P[k]) 
+    return int(P[k]) # une seule ligne ?
     
 
 def eval_poly(P, x):
@@ -337,12 +337,12 @@ def eval_poly(P, x):
         46
     """    
     i=1
-    n=int(P.deg)
+    n=P.deg # P.deg  est déjà un int
     s=P[n]
     while n-i>=0:
      s=s*x+P[n-i]
      i=i+1
-    return int(s)    
+    return s # le résultat peut très bien être un float.
 
 def derivative(P):
     """ Renvoie le polynôme dérivé de P.
@@ -355,6 +355,8 @@ def derivative(P):
         15*X**2 - 6
     """
     for i in range (P.deg):
+        # Tu modifies le paramètre ! À la sortie de la fonction, le polynôme 
+        # passé en argument est modifié ; ce n'est pas ce qu'on veut.
         P[i]=P[i+1]*(i+1)
     P[P.deg]=0
     return P  
@@ -373,23 +375,25 @@ def sturm_sequence(P):
         >>> P = Polynome([-1, 9, -6, 1])
         >>> sturm_sequence(P)
         [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]"""
-    import copy
+    import copy # inutile si derivative avait été bien fait.
     A=copy.deepcopy(P)
-    l=[1]*(int(P.deg)+2)
+    l=[1]*(P.deg+2) # maladroit de créer une grosse liste pour n'en renvoyer
+                    # qu'une partie.
     l[0]=A
     l[1]=derivative(P) 
     for i in range(A.deg): # On choisit d'effectuer une boucle for, en effet a 
-     l[i+2]=-l[i]%l[i+1] # chaque itération de la suite de sturm le dégré 
-     if l[i+2]==0:         # diminue ainsi il y aura au maximum un nombre 
-      return l[0:i+2]      # d'itération égal au degré du polynome initial
+        l[i+2]=-l[i]%l[i+1] # chaque itération de la suite de sturm le dégré 
+        if l[i+2]==0:         # diminue ainsi il y aura au maximum un nombre 
+          return l[0:i+2]      # d'itération égal au degré du polynome initial
     return l     
-
+    
 P = Polynome([-1, 9, -6, 1])
 sturm_sequence(P)
 
    
 
-
+# Conclusion: les q° préliminaires sont bien traitées, mais le reste est un 
+# peu maladroit.
 
     
     

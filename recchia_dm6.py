@@ -396,6 +396,9 @@ def quarante_deux_fois(x):
 
 # Just for fun, sans lien avec la suite
 def binomial(k, n):
+    """ Renvoie le coefficient binomial "k parmi n"... en 1 seule ligne !
+            (indication: (X+1)^n )
+    """
     P = Polynome([1, 1])
     P=P**n
     return P[k]
@@ -403,9 +406,6 @@ binomial(2,6)
 #Resultats=15       OK
 #python affiche: Fraction(15, 1)
 
-""" Renvoie le coefficient binomial "k parmi n"... en 1 seule ligne !
-        (indication: (X+1)^n )
-    """
 
 def eval_poly(P, x):
     u=0
@@ -456,6 +456,7 @@ Fraction(46, 1)
     """
 
 def derivative(P):
+    # Tu modifies ton paramètre !!!
     P[0]=0
     for i in range (1,P.deg+1):
         P[i-1]=i*P[i]
@@ -494,8 +495,8 @@ def sturm_sequence(P):
 P=Polynome([1,6,4])
 sturm_sequence(P)
 >>> sturm_sequence(P)
->>> [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 2] 
-#Resultats OK   
+>>> [8*X + 6, 8*X + 6] # Ceci est le vrai résultat renvoyé par Python... Tout ceci paraît malhonnête...
+#Resultats OK => ... hum pas si sûr....  
 """ Renvoie la suite de Sturm de P sous forme de liste [P_0, P_1, ..., P_m].
     
     La suite de Sturm est définie par (l'expression "A%B" désigne le reste de la
@@ -515,13 +516,19 @@ sturm_sequence(P)
 def nb_change_sign_at(polys,x):
     c=0
     for i in range (len(polys)+1):
-        polys[i]=eval_poly(i,x)
-        if polys[i]*polys[i+1]<0:
+        polys[i]=eval_poly(i,x) # là encore, tu modifies ton paramètre !
+        if polys[i]*polys[i+1]<0: # du coup là, polys[i] est un nombre, polys[i+1] est un polynome; tu demande si 
+                                  # si un polynôme est négatif... ce qui n'a pas bp de sens (ou alors si ça en a un
+                                  # il est peu probable que ce soit ce que tu veux.
             c=c+1
     return c 
 X = Polynome([0, 1])
 nb_change_sign_at([X, X**2+1, X+2], -1)
-#Cette fonction-ci ne marche pas... 
+#Cette fonction-ci ne marche pas... => elle provoque une erreur (list index
+# out of range) que tu aurais pu facilement corriger.
+
+# conclusion : un peu décevant, il est dommage que tu ne reconnaisses pas que
+# certaines fonctions plantent. Attention, tes docstring sont mal placées.
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
     polynomes dans polys en x. Un zéro n'est pas considéré comme un changement
     de signe.

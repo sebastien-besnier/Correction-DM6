@@ -281,20 +281,18 @@ On obtient le polynôme -5/2744*X**9 + 5/1372*X**8 - 5/2058*X**7 + 5/9261*X**6 +
 
 5:
 On peut prendre un polynôme quelconque non nul Q, si le produit de P et Q est nul, P est le polynôme nul
+=> Et comment vois tu que ce résultat est 0 ?
+tu tournes en rond là.
 
-def binomial(k,n):
+def binomial(k,n): # 1 ligne ?
     """ Renvoie le coefficient binomial "k parmi n"... en 1 seule ligne !
         (indication: (X+1)^n )
     """
     if k>n or k<0:
-        print 'Coefficient binomial non défini'
-    else:
-        if k==0:
-            return 1
-        if k==n:
-            return 1
-        else:
-            return binomial(k-1,n-1)+binomial(k,n-1)
+        return 0
+    if k==0 or k==n:
+        return 1
+    return binomial(k-1,n-1)+binomial(k,n-1)
         
 def eval_poly(P,x):
     """ Renvoie P(x).
@@ -338,7 +336,7 @@ def derivative(P):
         >>> derivative(5*X**3 - 6*X +3)
         15*X**2 - 6
     """
-    if P.deg<=0:
+    if P.deg<=0: # cas inutile : déjà géré dans le cas principal
         return Polynome([0])
     else:
         Q=Polynome([0])
@@ -362,7 +360,7 @@ def sturm_sequence(P):
         [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]
     """
     if P.deg<=0:
-        print 'Un polynome constant ne peut pas avoir de suite de Sturm'
+        raise('Un polynome constant ne peut pas avoir de suite de Sturm') #pour provoquer une erreur
     else:
         l=[]
         l.append(P)
@@ -376,7 +374,7 @@ def sturm_sequence(P):
     
 sturm_sequence(Polynome([-1,9,-6,1]))
     
-    
+# Conclusion : bien
 
 
 

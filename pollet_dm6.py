@@ -326,13 +326,14 @@ class Polynome:
 # rep : le polynome est P=X+2X**2+3X**3
 # 1. Construire le polynôme X^52 + 3X^2 +1 (plusieurs lignes peuvent 
 #    être nécessaires).
+# Comment être sûr de ne pas avoir oublié un 0 ?
 #il faut taper Polynome([1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 #0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1])
 #l'interpreteur repond : X**52 + 3*X**2 + 1
 # 2. Donner 2 moyens de connaître le coefficient dominant d'un polynôme P
-# on tape P.deg
+# on tape P.deg => Non.
 # 3. Comment accéder au terme constant d'un polynôme P?
-#le terme constant d'un polynome est le premier chiffre le constituant, on tape P[0]
+#le terme constant d'un polynome est le premier coefficient le constituant, on tape P[0]
 # 4. Calculer le reste de la division de 5X^42 + 3X+1 par 42 X^12 +3X-2.
 #P1=Polynome([1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5])
 #P2=Polynome([-2,3,0,0,0,0,0,0,0,0,0,0,42])
@@ -383,7 +384,7 @@ def binomial(k, n):
     """
     X=Polynome([0,1])   
     P=(X+1)**n   
-    return P[k]
+    return P[k] # 1 ligne ?
 
 def eval_poly(P,x):
     """ Renvoie P(x).
@@ -456,11 +457,11 @@ def sturm_sequence(P):
     P1=derivative(P)
     l=[P,P1]
     i=0    
-    while not l[i]%l[i+1]==0:
+    while not l[i]%l[i+1]==0: # multiévaluation de l[i]%l[i+1]
         l.append(-l[i]%l[i+1])
         i+=1
     return l
-     
+# Travail Correct.
         
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 

@@ -4,7 +4,7 @@ Created on Mon Feb 23 12:58:44 2015
 
 @author: nicolas
 """
-
+"""
 La classe Polynome sert à manipuler simplement des polynômes. Voici quelques
 exemples d utilisation (les ">>>" indiquent que la ligne est une commande 
 passée à l interpréteur Python, les autres lignes sont les réponses de
@@ -69,7 +69,7 @@ Opérations algébriques : tout ce que vous révez de faire avec des polynômes
 #           IGNOREZ LES LIGNES SUIVANTES JUSQU'AU PROCHAIN                     #
 #                   ENCART VOUS INVITANT À LIRE                                #
 ################################################################################
-"""
+
 from numbers import Number
 from fractions import Fraction
 class Polynome:
@@ -378,7 +378,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=(Polynome([1,1]))**n
-    return P[k]
+    return P[k] # 1 ligne ?
 
 def eval_poly(P, x):
     """ Renvoie P(x).
@@ -451,7 +451,7 @@ def sturm_sequence(P):
         L.append(Pj)
     return L
      
- def nb_change_sign_at(polys, x):
+def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
     polynomes dans polys en x. Un zéro n'est pas considéré comme un changement
     de signe.
@@ -471,6 +471,9 @@ def sturm_sequence(P):
     i=0
     while i<(len(polys)-1):
         j=i+1
+        # eval_poly(polys[i],x) est évalué à chaque fois alors qu'il ne change
+        # pas lorsque j varie. On peut n'évaluer qu'une seule fois chaque
+        # polynomes de polys, ce qui est loin d'être ton cas. Voir correction.
         while j<len(polys) and eval_poly(polys[j],x)*eval_poly(polys[i],x)>=0:
             j+=1
         if j<len(polys):
@@ -490,8 +493,7 @@ def nb_roots_between(polys, a, b):
         a: un nombre;
         b: un nombre strictement plus grand que a.
     """
-    roots=nb_change_sign_at(polys, a)-nb_change_sign_at(polys, b)
-    return roots
+    return nb_change_sign_at(polys, a)-nb_change_sign_at(polys, b)
     
  
  
@@ -504,7 +506,7 @@ def roots_range(P):
     """
     M=0
     for i in range(P.deg-1):
-        M+=abs(-P[i]/P.lead)
+        M+=abs(P[i]/P.lead) # le "-" est bouffé par le "abs". Factorise le "/P.lead".
     if M<1:
         M=1
     return M
@@ -517,7 +519,7 @@ def nb_roots(polys):
         polys: une liste de polynômes, plus exactement, polys est la suite de
             Sturm de polys[0].
     """
-    M=roots_range(polys[0])
+    M=roots_range(polys[0]) +1 # M peut être une racine.
     nb_roots=nb_roots_between(polys, -M, M)
     return nb_roots
  
@@ -581,5 +583,9 @@ def roots(P, eps):
     """
     L=[]
     for i in range(len(isolate_roots(P.square_free()))-1):
+        # Plusieurs appels à P.square_free()... Un seul suffit !
+        # 3 appels à isolate_roots... Idem !
         L.append(find_root(P.square_free(), isolate_roots(P.square_free())[i], isolate_roots(P.square_free())[i+1], eps))
     return L
+    
+# Conclusion : À part quelques appels de fonctions superflux, c'est très bien.

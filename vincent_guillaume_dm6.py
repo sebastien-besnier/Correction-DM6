@@ -15,7 +15,7 @@ Created on Fri Feb 27 09:43:42 2015
 
 
 #1) on a le polynome 3X**3+2X**2+X
-#2) on peut utiliser P.deg ou
+#2) on peut utiliser P.deg (=> bof) ou ???
 #3) on tape P([0])
 #P=Polynome([0])
 #P[42]=5
@@ -34,7 +34,7 @@ Created on Fri Feb 27 09:43:42 2015
 def binomial(k,n):
     P=Polynome([1,1])
     P=P**n
-    return P[k]
+    return P[k] # 1 ligne ?
 binomial(2,5)
 #10
 
@@ -43,7 +43,7 @@ def derivative(P):
     Q=Polynome([])
     for i in range(P.deg+1): 
         Q[i]=P[i+1]*(i+1)
-        Q.deg=i-1
+        Q.deg=i-1 # Ce n'est pas à toi de t'occuper de ça.
     return Q
 derivative(P)
    #4*X**3 + 3*X**2 + 2*X + 1
@@ -65,6 +65,8 @@ def sturm_sequence(Q):
         l.append(-l[i-1]%l[i])
         i=i+1
     return l
+    
+# Travail correct, dommage que tu ne respectes pas le format (docstrings manquantes).
 P=Polynome([2,-3,-1,0,1]) 
 sturm_sequence(P)
 #[X**4 - X**2 - 3*X + 2, 4*X**3 - 2*X - 3, 1/2*X**2 + 9/4*X - 2, -95*X + 75, -127/1444]

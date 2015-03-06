@@ -338,10 +338,12 @@ class Polynome:
 #   P=Polynome(p)
 #
 #2  Pour connaitre le coefficient dominant d'un polynome,
-#   on peut utiliser P[n], avec n le degres de P (n=P.deg), ou P.lead
+#   on peut utiliser P[n], avec n le degré de P (n=P.deg), ou P.lead
 #
 #3  On accede au terme constant du polynome avec P[0].
 #
+
+#    X n'est pas défini ici.
 #4  Soit r le reste de la division de 5X^42 + 3X+1 par 42 X^12 +3X-2
 #   r=(5*X**42 + 3*X+1)%(42*X**12 +3*X-2)
 #
@@ -349,8 +351,8 @@ class Polynome:
 #   def polynome_est_nul(p):
 #       res=True
 #       for i in range(p.deg):
-#           if p[i]!=0
-#           res=False
+#           if p[i]!=0 # syntax error
+#           res=False # indention problem
 #       return res
 #   ou plus simplement p==0
 
@@ -397,7 +399,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=Polynome([1,1])**n
-    return int(P[k]) 
+    return int(P[k]) # 1 ligne?
     
 
 def eval_poly(P, x):
@@ -467,8 +469,11 @@ def sturm_sequence(P):
     P_1=derivative(P)
     l=[P_0,P_1]
     k=0
+    
+    # parenthésage : que signifie "not (poly1%pol2)" ? Je ne sais
+    # trop...
     while not(l[k]%l[k+1])==0:
-        l.append(-(l[k]%l[k+1]))
+        l.append(-(l[k]%l[k+1])) # plusieurs évaluations de la mm quantité
         k=k+1
     return l
     
@@ -492,8 +497,10 @@ def nb_change_sign_at(polys, x):
     c=0
     l=polys
     for i in range(len(l)-1):
+        # plusieurs évaluations de la même quantité
         if eval_poly(l[i],x)*eval_poly(l[i+1],x)<0:
             c=c+1
+        # et s'il y a plusieurs 0 à la suite ?
         elif eval_poly(l[i+1],x)==0 and eval_poly(l[i],x)*eval_poly(l[i+2],x)<0:
             c=c+1
     return c
@@ -509,8 +516,7 @@ def nb_roots_between(polys, a, b):
         a: un nombre;
         b: un nombre strictement plus grand que a.
     """
-    nbroots=nb_change_sign_at(polys, a)-nb_change_sign_at(polys, b)
-    return nbroots
+    return nb_change_sign_at(polys, a)-nb_change_sign_at(polys, b)
 
 
 def roots_range(P):
@@ -523,9 +529,8 @@ def roots_range(P):
     S=0
     for i in range(P.deg):
         S=S+abs(P[i])
-    s=float(S)/P.lead
-    maj=max(1,s)
-    return maj
+    s=float(S)/abs(P.lead) # P.lead peut être < 0
+    return max(1,s)
         
     
 def nb_roots(polys):
@@ -537,7 +542,7 @@ def nb_roots(polys):
             Sturm de polys[0].
     """
     P=polys[0]
-    M=roots_range(P)
+    M=roots_range(P)+1 # M peut être une racine.
     a=nb_change_sign_at(polys, -M)
     b=nb_change_sign_at(polys, M)
     return a-b
@@ -548,10 +553,11 @@ def find_root(P, a, b, eps):
 
     Algorithme : utiliser une dichotomie.
     """
+    # Et si P(a) == 0 ?
     debut,fin=a,b
     m=float(debut+fin)/2
     while abs(eval_poly(P,m))>eps:
-        if eval_poly(P,debut)*eval_poly(P,m)<0:
+        if eval_poly(P,debut)*eval_poly(P,m)<0:#plusiers évaluations de la mm quantité
             fin=m
         else:
             debut=m
@@ -601,3 +607,6 @@ def roots(P, eps):
         r=find_root(P,I[i],I[i+1],eps)
         roots.append(r)
     return roots
+    
+# Complet, bon travail à part quelques erreurs et un peut de lourdeur
+

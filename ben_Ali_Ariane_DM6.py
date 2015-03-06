@@ -441,7 +441,8 @@ def sturm_sequence(P):
         >>> sturm_sequence(P)
         [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]
     """
-    sturm,i = [P,derivative(P)],0
+    sturm,i = [P,derivative(P)],0 # pas très élégant, sturm et i sont 2 entité très différentes
+    # Ok mais "sturm[i] % sturm[i+1]" calculé deux fois.
     while not(sturm[i] % sturm[i+1]) == 0:
         sturm.append(- sturm[i] % sturm[i+1])
         i += 1 
@@ -465,6 +466,11 @@ def nb_change_sign_at(polys, x):
         2 # on a "-1, 2, -3" soit la chaîne de signes "-+-", donc 2 changements
     """
     nb_change_sign = 0
+    # Beaucoup de calculs inutiles: avec ton while, tu cherches le premier
+    # polynôme non nul en x, puis après tu "reviens en arrière", alors que
+    # tu sais que tu as pleins de polynôme nul en x qui suivent. Au lieu
+    # d'un "for" à l'extérieur, il aurait mieux fallu un "while" et "faire
+    # avancer" ton i en fonction de k.
     for i in range(len(polys)-1):
         k = i
         while eval_poly(polys[k+1],x) == 0 and k < len(polys)-2: 
@@ -498,7 +504,7 @@ def roots_range(P):
     somme = 0.
     for i in range(P.deg):
         somme += abs(P[i])
-    return max(1,somme/P.lead)
+    return max(1,somme/abs(P.lead)) # le coefficient dominant peut être < 0 !
     
 def nb_roots(polys):
     """ Renvoie le nombre de racines réelles du premier polynôme de polys,
@@ -508,7 +514,9 @@ def nb_roots(polys):
         polys: une liste de polynômes, plus exactement, polys est la suite de
             Sturm de polys[0].
     """
-    return nb_change_sign_at(polys, -roots_range(polys[0])) - nb_change_sign_at(polys, roots_range(polys[0]))
+    #Les racines peuvent être en M ou en -M.
+    # roots_range évalué 2 fois...
+    return nb_change_sign_at(polys, -roots_range(polys[0])-1) - nb_change_sign_at(polys, roots_range(polys[0])+1)
 
 def find_root(P, a, b, eps):
     """ Trouve une racine de p dans [a,b[, sachant que p(a) * p(b) <= 0.
@@ -524,6 +532,7 @@ def find_root(P, a, b, eps):
             deb = m
         m = float(deb + fin) / 2
     return m
+    # find_root(Polynome([0,1]),0,1,0.01) ne s'arrête pas
 
 
 def isolate_roots(P):
@@ -536,7 +545,7 @@ def isolate_roots(P):
     correctement implémentées.
     """
     polys = sturm_sequence(P)
-    M = roots_range(P) + 1
+    M = roots_range(P) + 1 # ;)
     
     def loop(a, b, n_prev):
         """Renvoie une liste [c_0, c_1, ..., c_m] telle que chaque intervalle de
@@ -566,3 +575,5 @@ def roots(P, eps):
     for i in range(len(isolate_roots(P))-1):
         roots.append(find_root(P,isolate_roots(P)[i],isolate_roots(P)[i+1],eps))
     return roots
+    
+# Conclusion : bon travail, complet.

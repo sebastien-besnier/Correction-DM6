@@ -323,12 +323,10 @@ class Polynome:
 # Questions préliminaires, pour être sûr d'avoir bien compris comment utiliser
 # les polynômes:
 # 0. Quel polynôme est construit par l'instruction Polynome([0,1,2,3])
-3*x**3+2*x**2+1*x+0
+3*x**3+2*x**2+1*x
 # 1. Construire le polynôme X^52 + 3X^2 +1 (plusieurs lignes peuvent 
 #    être nécessaires).
-l=[]
-for i in range (52):
-    l.append (0)
+l=[0]*52
 l.append (1)
 A=Polynome([1, 0, 3])
 B=Polynome(l)
@@ -339,7 +337,7 @@ ou P[P.deg]
 # 3. Comment accéder au terme constant d'un polynôme P?
 P[0] 
 # 4. Calculer le reste de la division de 5X^42 + 3X+1 par 42 X^12 +3X-2.
-(5*X**42+3*X+1)%(42*X**12+3*X-2)
+#(X n'est pas défini)
 l=[]
 for i in range (42):
     l.append (0)
@@ -358,7 +356,7 @@ P%Q
 -5/2744*X**9 + 5/1372*X**8 - 5/2058*X**7 + 5/9261*X**6 + 3*X + 1
 # 5. Si P est un polynôme, comment tester que P est le polynôme nul?
 P=Polynome([1,5])
-if P.deg==0 and P[0]==0:
+if P.deg==0 and P[0]==0: # Non, si P.deg = 0, alors P != 0...
      True
 else:
     False
@@ -436,11 +434,11 @@ def eval_poly(P, x):
         46
     """
     a=P.deg
-    print P[a]
+    print P[a]# Pourquoi faire ?
     z=0
     while a>0:
         z=(z+P[a])*x
-        a-=1
+        a-=1 # pour un indice, "i" est plus courant comme nom de variable
     return z+P[0]
     
 X = Polynome([0,1])
@@ -483,18 +481,20 @@ def sturm_sequence(P):
         >>> sturm_sequence(P)
         [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]
     """
-    Pun=P
-    Pdeux=derivative(P)
-    l=[Pun,Pdeux]
-    while not((Pun%Pdeux)==0):
-        Ptrois=(Pun%Pdeux)*(-1)
-        Pun,Pdeux=Pdeux,Ptrois
-        l.append(Ptrois)        
-    return [l]
+    P1=P
+    P2=derivative(P)
+    l=[P1,P2]
+    while not((P1%P2)==0):
+        P3= - P1%P2 # P1%P2 évalué deux fois.
+        P1,P2=P2,P3
+        l.append(P3)        
+    return l # pourquoi se compliquer la vie ?
     
 P = Polynome([-1, 9, -6, 1])
 sturm_sequence(P)
-        
+       
+# travail correct, mais tu te prends parfois la tête pour des choses toutes 
+# simples.
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
     polynomes dans polys en x. Un zéro n'est pas considéré comme un changement

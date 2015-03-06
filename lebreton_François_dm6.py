@@ -374,7 +374,7 @@ def binomial(k, n):
     """ Renvoie le coefficient binomial "k parmi n"... en 1 seule ligne !
         (indication: (X+1)^n )
     """
-    return ((Polynome([1, 1]))**n)[k]
+    return (Polynome([1, 1])**n)[k] # parenthèses superflues
 binomial(3,5)    #10
 binomial(6,13)	#1716
 
@@ -415,6 +415,7 @@ sturm_sequence(Polynome([-1,9,-6,1]))#[X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 
 def nb_change_sign_at(polys, x):
 	c=0
 	for i in range (1,len(polys)):
+	    # et si il y a un 0 dans le tas ? polys[i] évalué 2 fois en x
 		if eval_poly(polys[i-1],x)*eval_poly(polys[i],x)<0:
 			c+=1
 	return c
@@ -442,7 +443,9 @@ def roots_range(P):
     return 0
     
 def nb_roots(polys):
-	return nb_roots_between(polys, roots_range(polys[0]), -roots_range(polys[0]))
+    #roots_range évalué 2 fois
+    # M ou - M peuvent être des racines
+	return nb_roots_between(polys, - roots_range(polys[0])+1, roots_range(polys[0])+1)
 
 
 def find_root(P, a, b, eps):

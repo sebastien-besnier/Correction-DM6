@@ -329,15 +329,17 @@ Le polynome construit est 3*X**3 + 2*X**2 + X.
 #    être nécessaires).
 P = Polynome([1, 0, 3])
 P[52] = 1
-print P     #Cela renvoie : X**52 + 3*X**2 + 1
+print P     #Cela affiche : X**52 + 3*X**2 + 1
 
 # 2. Donner 2 moyens de connaître le coefficient dominant d'un polynôme P
 1. On utilise la fonction P.lead
-2. On utilise le programme de base permettant de trouver le maximum d une liste 
-et on le convertit pour trouver le maximum du polynome.
+2. On utilise [le programme de base]->(c est à dire ?) 
+permettant de trouver le maximum d une liste 
+et on le convertit pour trouver [le maximum du polynome] -> mais bien sûr, aller hop
+tu vas re avoir le droit d effacer le tableau.
 
 # 3. Comment accéder au terme constant d'un polynôme P?
-On remplace P par 0 et le resultat est notre terme constant.
+On remplace P par 0 et le resultat est notre terme constant. Hein ?
 
 # 4. Calculer le reste de la division de 5X^42 + 3X+1 par 42 X^12 +3X-2.
 P = Polynome ([1, 3])
@@ -348,7 +350,8 @@ P%X     #-5/2744*X**9 + 5/1372*X**8 - 5/2058*X**7 + 5/9261*X**6 + 3*X + 1
 
 # 5. Si P est un polynôme, comment tester que P est le polynôme nul?
 On multiplie P par un autre polynome (ou un reel) non nul est si le resultat donne
-0, c est que P est le polynome nul.
+0, c est que P est le polynome nul. => Et comment vois tu que ce résultat est 0 ?
+tu tournes en rond là.
 
 # Consigne: écrire le corps des fonctions données. Laisser la docstring
 # (la chaine de caractères sous la fonction la documentant). TESTER ABONDAMMENT
@@ -389,7 +392,7 @@ def quarante_deux_fois(x):
 # Just for fun, sans lien avec la suite
 def binomial(k, n):
     P=(Polynome([1,1]))**n
-    return P[k]
+    return P[k] # 1 ligne?
 
 #binomial (2,4), la fonction renvoie 6.
     
@@ -425,7 +428,8 @@ def sturm_sequence(P):
 #sturm_sequence(Polynome([2,6,6,8])), la fonction renvoie [8*X**3 + 6*X**2 + 6*X + 2, 24*X**2 + 12*X + 6, -3*X - 3/2, -6].
 #sturm_sequence(Polynome([0,0]), la fonction renvoie [0, 0].
     
-        
+# Conclusion : moyen. Les q° préliminaires ne sont pas bien comprises. Les fonctions
+# sont correctes, mais la forme n'est pas respectée (docstring manquante).
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
     polynomes dans polys en x. Un zéro n'est pas considéré comme un changement

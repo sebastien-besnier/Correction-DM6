@@ -331,7 +331,7 @@ class Polynome:
 
 P=Polynome([1, 0, 3])
 X=Polynome([0, 1])
-X=X**52
+X=X**52 # dangeureux... Maintenant X ne contient pas le polynôme qu'on appelle d'habitude X...
 P=P+X
 
 # 2. Donner 2 moyens de connaître le coefficient dominant d'un polynôme P
@@ -405,7 +405,7 @@ def binomial(k, n):
     """
     P=Polynome([1, 1]) 
     P=P**n
-    return P[k]
+    return P[k]# 1 ligne ?
     
 binomial(2,4)
 
@@ -440,7 +440,7 @@ def eval_poly(P, x):
         46
     """
     m=P.lead
-    if P.deg>=1:
+    if P.deg>=1: # on peut se passer de ce test.
         for i in range (1,P.deg+1):
             m=(P[P.deg-i]+m*x)
     return m
@@ -490,7 +490,8 @@ def sturm_sequence(P):
     """
     L=[0]
     L[0]=P
-    L.append(derivative(P))
+    L.append(derivative(P)) 
+    # un peu compliqué... Les 3 lignes précédentes en 1 : L = [P, derivative(P)]
     i=0
     R=1
     while R!=0:
@@ -498,7 +499,7 @@ def sturm_sequence(P):
         L.append(-R)
         i=i+1
         if R==0:
-            break    #Sinon la boucle ne s'arretait pas meme quand R==0 ..
+            break    #Sinon la boucle ne s'arretait pas meme quand R==0 ..  du à un defaut de ma classe ;)
     L.remove(0)
     return L
 
@@ -524,6 +525,7 @@ def nb_change_sign_at(polys, x):
     l=[]    
     n=0
     compt=0
+    # bien vu mais tu dois faire 2 parcours de liste.
     for i in range (0,len(polys)):
         n=eval_poly(polys[i],x)
         if n>=0:

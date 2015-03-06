@@ -252,7 +252,8 @@ class Polynome:
         return self // self.gcd(t)
  
     __repr__ = __str__
-    
+
+# Numéros des questions ?
 P=Polynome([0,1,2,3])
 P #3*X**3 + 2*X**2 + X
 P=Polynome([1,0,3])
@@ -264,7 +265,7 @@ print P[0]
 P[52]=5
 X=Polynome([0,1])
 P%(42*X**12+3*X-2) #5/38416*X**8 - 5/14406*X**7 + 5/14406*X**6 - 10/64827*X**5 + 5/194481*X**4 + 3*X**2 + 1
-5+P #si le résultat est 5 alors P est le polynome nul
+5+P #si [le résultat est 5]-> (et comment testes ça? pourquoi 5?) alors P est le polynome nul
 
 
 def binomial(k,n):
@@ -272,7 +273,7 @@ def binomial(k,n):
         (indication: (X+1)^n )
     """
     P=(X+1)**n
-    return P[k]
+    return P[k] # 1 ligne ?
     
 binomial(2,4) #6
 
@@ -372,7 +373,8 @@ sturm_sequence(P)
 
          
     
-
+# Conclusion : bien. Dommage que les questions préliminaires soient mal
+# présentées
 
 
 

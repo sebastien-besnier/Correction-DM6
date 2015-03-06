@@ -2,7 +2,7 @@
 """
 Created on Mon Feb 23 12:58:44 2015
 
-@author: nicolas
+@author: nicolas# Tu te foutterais pas un peu de ma gueule là par hasard ?
 """
 
 La classe Polynome sert à manipuler simplement des polynômes. Voici quelques

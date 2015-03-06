@@ -347,10 +347,10 @@ P[52]=1
 # 4. Calculer le reste de la division de 5X^42 + 3X+1 par 42 X^12 +3X-2.
 
 "(5*X**42+3*X+1)%(42*X**12+3*X-2)=-0.0018221574344*X**9+0.0036443148688*X**8-0.00242954324587*X**7+0.000539898499082*X**6+3*X+1"
-
+# bizare ces résultats en "float"...
 # 5. Si P est un polynôme, comment tester que P est le polynôme nul?
 
-"Faire la commande P.deg, la réponse sera False ou donnera une erreur si le polynôme est nul, un entier sinon."
+"Faire la commande P.deg, la réponse sera False ou donnera une erreur si le polynôme est nul (d'où sors tu ça ?), un entier sinon."
 
 # Consigne: écrire le corps des fonctions données. Laisser la docstring
 # (la chaine de caractères sous la fonction la documentant). TESTER ABONDAMMENT
@@ -394,7 +394,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=(X+1)**n
-    return P[k]
+    return P[k]#1 ligne?
 binomial(2,3)
     
 
@@ -425,7 +425,7 @@ def eval_poly(P,x):
         >>> eval_poly(5*X**2 + 1, 3)
         46
     """
-    k=0
+    k=0 #peu élégant, voir corrigé
     for i in range(P.deg+1,-1,-1):
         k=k*x
         k=k+P[i]
@@ -444,7 +444,7 @@ def derivative(P):
     """
     d=[]
     for i in range(1,P.deg+1):
-        d+=[P[i]*i]
+        d.append(P[i]*i) # d+=[machin] est très lent
     return Polynome(d)
 derivative(X**2) 
 
@@ -472,6 +472,7 @@ def sturm_sequence(P):
 P = Polynome([-1, 9, -6, 1])
 sturm_sequence(P)
         
+#Conclusion : bien malgré quelques maladresses de style.
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
     polynomes dans polys en x. Un zéro n'est pas considéré comme un changement

@@ -363,7 +363,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=(X+1)**n
-    return P[k]
+    return P[k] # 1ligne?
     
 
 def eval_poly(P, x): #Il y a une question à la fin de la fonction
@@ -398,7 +398,9 @@ def eval_poly(P, x): #Il y a une question à la fin de la fonction
         res=res + P[i]*x**i
     return res
 #Le programme me retourne le résultat sous la forme Fraction(Y,1) Est-ce normal ? """
-       
+# Oui, cela vient du fait de les coefficients des polynômes sont convertis
+# sous forme de fractions afin d'avoir une division euclidienne correcte (avec
+# des float, on a très rapidement des soucis de comparaison à 0).
        
 def derivative(P):
     """ Renvoie le polynôme dérivé de P.
@@ -467,7 +469,7 @@ def nb_change_sign_at(polys, x):
     for j in range(len(polys)):
         L.append(eval_poly(polys[j],x))
     for i in range(1,len(L)):
-        if L[i]*L[i-1]<0:
+        if L[i]*L[i-1]<0:# Et s'il y a des 0 ?
             res+=1
     return res
 
@@ -494,7 +496,7 @@ def roots_range(P):
     c=0
     for i in range(P.deg):
         c=c + abs(P[i])
-    return c/P[P.deg]
+    return c/abs(P[P.deg]) #le signe du coeff dominant peut-être < 0
     
 def nb_roots(polys):#Commenaire à la fin
     """ Renvoie le nombre de racines réelles du premier polynôme de polys,
@@ -506,6 +508,9 @@ def nb_roots(polys):#Commenaire à la fin
     """
     return abs(nb_roots_between(polys,-roots_range(polys[0]),roots_range(polys[0])))
 #J'ai mis "abs" car certaines fois j'avais des réponses négatives.
+# Surement du au fait que roots_range devait te renvoyer un nombre < 0 lorsque
+# le coeff dominant est < 0.
+
 def find_root(P, a, b, eps):
     """ Trouve une racine de p dans [a,b[, sachant que p(a) * p(b) <= 0.
     Renvoie une approximation de la racine à eps près.
@@ -513,6 +518,8 @@ def find_root(P, a, b, eps):
     Algorithme : utiliser une dichotomie.
     """
     c= (a+b)/2
+    # avec une telle condition (qui se récrit plus simplement avec abs), on n'a
+    # pas de contrôle sur la précision sur la racine.
     while eval_poly(P,c)>eps or eval_poly(P,c)<(-eps):
         c=(a+b)/2
         if eval_poly(P,a)*eval_poly(P,c)>0:
@@ -559,3 +566,5 @@ def roots(P, eps):
     for i in range(len(i_r)-1):
         roots.append(find_root(P,i_r[i],i_r[i+1],eps))
     return roots
+
+# Conclusion : Bien, j'apprécie l'honnêteté des commentaires.

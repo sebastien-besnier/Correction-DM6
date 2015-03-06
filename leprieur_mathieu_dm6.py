@@ -372,7 +372,7 @@ def binomial(k, n):
         (indication: (X+1)^n )
     """
     P=Polynome([1,1])**n
-    return int(P[k])
+    return int(P[k]) # 1 ligne ?
     
 
 def eval_poly(P, x):
@@ -438,15 +438,16 @@ def sturm_sequence(P):
         >>> sturm_sequence(P)
         [X**3 - 6*X**2 + 9*X - 1, 3*X**2 - 12*X + 9, 2*X - 5, 9/4]
     """
-    A=P
+    A=P # inutile...
     B=derivative(P)
     L=[A,B]
-    while B[1]!=0:
+    while B[1]!=0: # Qu'est ce que c'est que cette condition ? si B = X**2+1, la boucle s'arrête ?
         L.append(-A%B)
         A,B=B,-A%B
     return L
     
-        
+# Succint; faire les questions préliminaires t'auraient p-ê permis de réfléchir
+# plus soigneusement à comment tester la nullité d'un polynôme.
 def nb_change_sign_at(polys, x):
     """ Calcule le nombre de changements de signes lorsqu'on évalue les 
     polynomes dans polys en x. Un zéro n'est pas considéré comme un changement
